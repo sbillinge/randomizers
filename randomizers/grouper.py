@@ -38,19 +38,20 @@ for x in classlist:
     # Last, First Second Third
     firstname = words[-1].split()  # first names are after the comma so [-1]
 
-    cclasslist.append(firstname[0] + " " + words[
-        0])  # pretty print with only first first name
+    cclasslist.append(firstname[0].strip() + " " + words[
+        0].strip())  # pretty print with only first first name
 
-roles = {0:"Leader",1:"Scribe",2:"Optimist",3:"pessimist",4:"Realist",5:"Domestique"}
+roles = {0: "Leader", 1: "Scribe", 2: "Optimist", 3: "pessimist", 4: "Realist",
+         5: "Domestique"}
 maxlen = max(cclasslist)
 assignment = []
 npergroup = 5
-ngroups = int(len(cclasslist))//int(npergroup) + 1
+ngroups = int(len(cclasslist)) // int(npergroup) + 1
 vals = 0
 for v in roles.values():
-    vals = max(vals,len(v))
+    vals = max(vals, len(v))
 
-if int(len(cclasslist))%int(npergroup) == 0:
+if int(len(cclasslist)) % int(npergroup) == 0:
     ngroups = ngroups - 1
 
 pad = 0
@@ -58,24 +59,30 @@ for j in np.arange(ngroups):
     for k in np.arange(npergroup):
         try:
             name = cclasslist.pop()
-            assignment.append([name,j,roles.get(k)])
-            pad = max(pad,len(name))
+            assignment.append([name, j, roles.get(k)])
+            pad = max(pad, len(name))
         except IndexError:
             pass
 
-#pad = pad+vals
-print(pad,vals)
+# pad = pad+vals
+print(pad, vals)
 for i in np.arange(ngroups):
     print("")
-    print("group {}".format(int(i)+1))
+    print("group {}".format(int(i) + 1))
     for el in assignment:
         if el[1] == i:
-            print("{0:10}: {1}".format(el[2],el[0]))
+            print("{0:10}: {1}".format(el[2], el[0]))
 sorteda = sorted(assignment, key=operator.itemgetter(0))
 print("")
-for k in np.arange(0,len(classlist),2):
+for k in np.arange(0, len(classlist), 2):
     try:
-        print("{0:<23} group: {1} | {2:<23} group: {3}".format(sorteda[k][0],sorteda[k][1]+1,sorteda[k+1][0],sorteda[k+1][1]+1))
+        print("{0:<23} group: {1:3} | {2:<23} group: {3}".format(sorteda[k][0],
+                                                                 sorteda[k][
+                                                                     1] + 1,
+                                                                 sorteda[k + 1][
+                                                                     0],
+                                                                 sorteda[k + 1][
+                                                                     1] + 1))
     except IndexError:
-        print("{0:<23} group: {1} |".format(sorteda[k][0],sorteda[k][1]+1))
+        print("{0:<23} group: {1:3} |".format(sorteda[k][0], sorteda[k][1] + 1))
 o.close()
