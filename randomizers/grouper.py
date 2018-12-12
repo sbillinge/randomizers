@@ -43,10 +43,13 @@ for x in classlist:
 
 roles = {0:"Leader",1:"Scribe",2:"Optimist",3:"pessimist",4:"Realist",5:"Domestique"}
 maxlen = max(cclasslist)
-print(maxlen)
 assignment = []
 npergroup = 5
 ngroups = int(len(cclasslist))//int(npergroup) + 1
+vals = 0
+for v in roles.values():
+    vals = max(vals,len(v))
+
 if int(len(cclasslist))%int(npergroup) == 0:
     ngroups = ngroups - 1
 
@@ -59,25 +62,20 @@ for j in np.arange(ngroups):
             pad = max(pad,len(name))
         except IndexError:
             pass
-vals = 0
-for v in roles.values():
-    vals = max(vals,len(v))
 
 #pad = pad+vals
-
-print(pad)
-
+print(pad,vals)
 for i in np.arange(ngroups):
     print("")
     print("group {}".format(int(i)+1))
     for el in assignment:
         if el[1] == i:
-            print(f"{el[2]}: {el[0]:<35} {el[2]}: {el[0]}".format(el[2],el[0]))
+            print("{0:10}: {1}".format(el[2],el[0]))
 sorteda = sorted(assignment, key=operator.itemgetter(0))
 print("")
 for k in np.arange(0,len(classlist),2):
     try:
-        print("{0:<33} group: {1} {2:<33} group: {3}".format(sorteda[k][0],sorteda[k][1]+1,sorteda[k+1][0],sorteda[k+1][1]+1))
+        print("{0:<23} group: {1} | {2:<23} group: {3}".format(sorteda[k][0],sorteda[k][1]+1,sorteda[k+1][0],sorteda[k+1][1]+1))
     except IndexError:
-        print("{0:<35} group: {1}".format(sorteda[k][0],sorteda[k][1]+1))
+        print("{0:<23} group: {1} |".format(sorteda[k][0],sorteda[k][1]+1))
 o.close()
