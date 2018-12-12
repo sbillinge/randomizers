@@ -47,44 +47,6 @@ for x in classlist:
     maxlen = max(cclasslist)
     iter += 1
 
-index, iter = 0, 0
-assignment = {}
-while index < len(item):
-    print('Group ' + str(iter + 1) + ':')
-    o.write('Group ' + str(iter + 1) + ':\n')
-    group = str(iter + 1)
-    try:
-        print('Leader: {}'.format(item[index]))
-        o.write('Leader: ' + item[index] + '\n')
-        assignment.update({item[index]: group})
-    except IndexError:
-        pass
-    try:
-        print('Scribe: {}'.format(item[index + 1]))
-        assignment.update({item[index + 1]: group})
-        o.write('Scribe: ' + item[index + 1] + '\n')
-    except IndexError:
-        pass
-    try:
-        print('Optimist: ' + item[index + 2])
-        assignment.update({item[index + 2]: group})
-        o.write('Optimist: ' + item[index + 2] + '\n')
-    except IndexError:
-        pass
-    try:
-        print('Realist: ' + item[index + 3])
-        assignment.update({item[index + 3]: group})
-        o.write('Realist: ' + item[index + 3] + '\n')
-    except IndexError:
-        pass
-    try:
-        print('Skeptic: ' + item[index + 4] + '\n')
-        assignment.update({item[index + 4]: group})
-        o.write('Skeptic: ' + item[index + 4] + '\n\n')
-    except IndexError:
-        pass
-    index += 5
-    iter += 1
 
 print("")
 print("Alphabetically")
