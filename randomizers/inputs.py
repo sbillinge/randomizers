@@ -1,6 +1,6 @@
 def get_input():
     if len(sys.argv) == 1:  # elegant exit if user doesn't give a filename
-        print("usage: python randomizer.py <filename>")
+        print("usage: python {} <filename>".format(sys.argv[0]))
         exit()
 
     try:  # elegant exit if there is an error in the filename

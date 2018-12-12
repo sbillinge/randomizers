@@ -7,7 +7,7 @@ import re
 import datetime
 import os
 
-from randomizers.inputs import get_input
+from inputs import get_input
 
 def letsgo(ifilename):
     if not ifilename:
