@@ -6,6 +6,7 @@ import random
 import re
 import datetime
 import os
+import numpy as np
 
 from inputs import get_input
 

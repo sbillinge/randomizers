@@ -6,6 +6,7 @@ import random
 import re
 import datetime
 import pprint as pp
+import numpy as np
 
 if len(sys.argv) == 1:  # elegant exit if user doesn't give a filename
     print("usage: python SimonRandomizer.py <filename>")
@@ -34,16 +35,16 @@ random.shuffle(classlist)  # now shuffle the names
 
 iter = 1
 # Some cleaning and pretty printing
-item = []
+cclasslist = []
 for x in classlist:
     words = re.split(',',
                      x)  # split into first and last names, assuming the format
     # Last, First Second Third
     firstname = words[-1].split()  # first names are after the comma so [-1]
 
-    item.append(firstname[0] + " " + words[
+    cclasslist.append(firstname[0] + " " + words[
         0])  # pretty print with only first first name
-    maxlen = max(item)
+    maxlen = max(cclasslist)
     iter += 1
 
 index, iter = 0, 0
@@ -89,5 +90,28 @@ print("")
 print("Alphabetically")
 for k in sorted(assignment):
     print(k, " group:", assignment[k])
+
+roles = {0:"Leader",1:"Scribe",2:"Optimist",3:"pessimist",4:"Realist",5:"Domestique"}
+newassignment = {}
+npergroup = 5
+ngroups = int(len(cclasslist))//int(npergroup) + 1
+if int(len(cclasslist))%int(npergroup) == 0:
+    ngroups = ngroups - 1
+
+
+for j in np.arange(ngroups):
+    for k in np.arange(npergroup):
+        try:
+            newassignment.update({cclasslist.pop():(j,roles.get(k))})
+        except IndexError:
+            pass
+
+for i in np.arange(ngroups):
+    print("")
+    print("group {}".format(int(i)+1))
+    for k,v in newassignment.items():
+        if v[0] == i:
+            print("{}: {}".format(v[1],k.strip()))
+
 
 o.close()
