@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding=utf-8
-"""The randomizer installer."""
+"""The randomizers installer."""
 from __future__ import print_function
 import os
 import sys
@@ -15,7 +15,7 @@ except ImportError:
 
     HAVE_SETUPTOOLS = False
 
-from randomizers import __version__ as RA_VERSION
+#from randomizers import __version__ as RA_VERSION
 
 
 def main():
@@ -33,7 +33,7 @@ def main():
                     "randomly",
         long_description=readme,
         license="CC0",
-        version='0.4.0',
+        version='0.0.1',
         author="Simon Billinge",
         maintainer="Simon Billinge",
         author_email="simon.billinge@gmail.com",
