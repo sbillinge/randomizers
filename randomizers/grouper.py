@@ -7,6 +7,7 @@ import re
 import datetime
 import pprint as pp
 import numpy as np
+import operator
 
 if len(sys.argv) == 1:  # elegant exit if user doesn't give a filename
     print("usage: python SimonRandomizer.py <filename>")
@@ -25,16 +26,11 @@ o = open('randomGrouplist_' + str(datetag) + '.txt', 'w')
 classlist = i.readlines()
 
 # clean the lines to remove leading and trailing whitespace and line-ends
-iter = 0
-for x in classlist:
-    classlist[iter] = classlist[iter].strip()
-    iter += 1
+classlist = [x.strip() for x in classlist]
 
 classlist = list(filter(None, classlist))  # filter out any empty lines
 random.shuffle(classlist)  # now shuffle the names
 
-iter = 1
-# Some cleaning and pretty printing
 cclasslist = []
 for x in classlist:
     words = re.split(',',
@@ -44,36 +40,44 @@ for x in classlist:
 
     cclasslist.append(firstname[0] + " " + words[
         0])  # pretty print with only first first name
-    maxlen = max(cclasslist)
-    iter += 1
-
-
-print("")
-print("Alphabetically")
-for k in sorted(assignment):
-    print(k, " group:", assignment[k])
 
 roles = {0:"Leader",1:"Scribe",2:"Optimist",3:"pessimist",4:"Realist",5:"Domestique"}
-newassignment = {}
+maxlen = max(cclasslist)
+print(maxlen)
+assignment = []
 npergroup = 5
 ngroups = int(len(cclasslist))//int(npergroup) + 1
 if int(len(cclasslist))%int(npergroup) == 0:
     ngroups = ngroups - 1
 
-
+pad = 0
 for j in np.arange(ngroups):
     for k in np.arange(npergroup):
         try:
-            newassignment.update({cclasslist.pop():(j,roles.get(k))})
+            name = cclasslist.pop()
+            assignment.append([name,j,roles.get(k)])
+            pad = max(pad,len(name))
         except IndexError:
             pass
+vals = 0
+for v in roles.values():
+    vals = max(vals,len(v))
+
+#pad = pad+vals
+
+print(pad)
 
 for i in np.arange(ngroups):
     print("")
     print("group {}".format(int(i)+1))
-    for k,v in newassignment.items():
-        if v[0] == i:
-            print("{}: {}".format(v[1],k.strip()))
-
-
+    for el in assignment:
+        if el[1] == i:
+            print(f"{el[2]}: {el[0]:<35} {el[2]}: {el[0]}".format(el[2],el[0]))
+sorteda = sorted(assignment, key=operator.itemgetter(0))
+print("")
+for k in np.arange(0,len(classlist),2):
+    try:
+        print("{0:<33} group: {1} {2:<33} group: {3}".format(sorteda[k][0],sorteda[k][1]+1,sorteda[k+1][0],sorteda[k+1][1]+1))
+    except IndexError:
+        print("{0:<35} group: {1}".format(sorteda[k][0],sorteda[k][1]+1))
 o.close()
