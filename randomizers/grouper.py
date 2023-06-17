@@ -5,7 +5,6 @@ import sys
 import random
 import re
 import datetime
-import pprint as pp
 import numpy as np
 import operator
 
