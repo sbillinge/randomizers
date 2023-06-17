@@ -21,7 +21,7 @@ def initialize_pairs(people, scores):
     pairset = {}
     for attribute, value in scores.items():
        for person in people:
-           if person.get(attribute) is None:
+           if person.get(attribute) is None and attribute != "previously_paired":
                print(f"WARNING: {person.get('_id')} is missing attribute {attribute}")
 
     person_ids = [person.get("_id") for person in people]
@@ -39,8 +39,7 @@ def initialize_pairs(people, scores):
         pair_ids.append(f"{pair[0]}-{pair[1]}")
         resultant = 0
         for attribute, value in scores.items():
-            diff = abs(get_person(pair[0], people).get(attribute, 0) -
-                       get_person(pair[1], people).get(attribute, 0))
+            diff = compute_diff()
             resultant += diff
         static_scores.append(resultant)
 
@@ -57,3 +56,19 @@ def get_person(id, people):
         person = [{}]
     return person[0]
 
+
+def compute_diff(pair, attribute, people):
+    attr1 = get_person(pair[0], people).get(attribute, 0)
+    attr1 = get_person(pair[0], people).get(attribute, 0)
+
+    if attr1 istype(number):
+        diff = abs(get_person(pair[0], people).get(attribute, 0) -
+            get_person(pair[1], people).get(attribute, 0))
+
+    elif attr1 istype(str):
+        if attr1 == attr2:
+            diff = 0
+        else:
+            diff = 1
+
+    return diff
