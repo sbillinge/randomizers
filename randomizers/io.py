@@ -24,7 +24,7 @@ def load_json_inputs(file):
 def json_to_collection(doc):
     coll = []
     for item in doc.items():
-        entry = {"_uid": item[0]}
+        entry = {"_id": item[0]}
         entry.update(item[1])
         coll.append(entry)
     return coll
