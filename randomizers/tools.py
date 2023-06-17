@@ -1,4 +1,4 @@
-from copy import copy
+from copy import copy, deepcopy
 import numpy as np
 
 def initialize_pairs(people, scores):
@@ -39,7 +39,7 @@ def initialize_pairs(people, scores):
         pair_ids.append(f"{pair[0]}-{pair[1]}")
         resultant = 0
         for attribute, value in scores.items():
-            diff = compute_diff()
+            diff = compute_diff(pair, attribute, people)
             resultant += diff
         static_scores.append(resultant)
 
@@ -59,16 +59,28 @@ def get_person(id, people):
 
 def compute_diff(pair, attribute, people):
     attr1 = get_person(pair[0], people).get(attribute, 0)
-    attr1 = get_person(pair[0], people).get(attribute, 0)
+    attr2 = get_person(pair[1], people).get(attribute, 0)
 
-    if attr1 istype(number):
+    if isinstance(attr1, (float, int)):
         diff = abs(get_person(pair[0], people).get(attribute, 0) -
             get_person(pair[1], people).get(attribute, 0))
 
-    elif attr1 istype(str):
+    elif isinstance(attr1, str):
         if attr1 == attr2:
             diff = 0
         else:
             diff = 1
 
     return diff
+
+def convert_attributes(scores, people):
+    errmsg = "ERROR:attr not in cifer"
+    decoded_people = []
+    for person in people:
+        decoded_person = deepcopy(person)
+        for attribute, value in scores.items():
+            if attribute != "previously_paired":
+                cifer = value.get("cifer")
+                decoded_person[attribute] = cifer.get(person.get(attribute), errmsg)
+        decoded_people.append(decoded_person)
+    return decoded_people

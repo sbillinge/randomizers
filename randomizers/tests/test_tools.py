@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from randomizers.tools import initialize_pairs, get_person, compute_diff
+from randomizers.tools import initialize_pairs, get_person, compute_diff, convert_attributes
 
 ip_people = [{"_id": "one", "thing1": 1, "thing2": 0},
              {"_id": "two", "thing1": 0, "thing2": 1},
@@ -31,16 +31,38 @@ def test_get_person(gpp):
     expected = gpp[1]
     assert expected == actual
 
-gp_people =
- {"_id": "test3", "a1": 3}]
-cd_tests = [([("test", "test2"),"a1",[{"_id": "test", "a1": 1}, {"_id": "test2", "a1": 2}], 1),
-             ([("test2", "test"), "a1", [{"_id": "test", "a1": 1}, {"_id": "test2", "a1": 2}], 1),
+
+cd_tests = [([("test", "test2"),"a1", [{"_id": "test", "a1": 1}, {"_id": "test2", "a1": 2}]], 1),
+             ([("test2", "test"), "a1", [{"_id": "test", "a1": 1}, {"_id": "test2", "a1": 2}]], 1),
              ([("test", "test2"), "a1",
-               [{"_id": "test", "a1": "same string"}, {"_id": "test2", "a1": "same string"}], 0),
-             ([("test", "test2"), "a1", [{"_id": "test", "a1": "string"}, {"_id": "test2", "a1": "different string"}], 1),
+               [{"_id": "test", "a1": "same string"}, {"_id": "test2", "a1": "same string"}]], 0),
+             ([("test", "test2"), "a1", [{"_id": "test", "a1": "string"}, {"_id": "test2", "a1": "different string"}]], 1),
              ]
 @pytest.mark.parametrize("cd", cd_tests)
 def test_compute_diff(cd):
     actual = compute_diff(cd[0][0], cd[0][1], cd[0][2])
     expected = cd[1]
+    assert expected == actual
+
+ca_tests = [([{"a1": {"score": 1, "cifer": {"a": 1, "b":0}},
+               "a2": {"score": 2, "cifer": {"ku": 1, "dos":0}},
+               "a3": {"score": 3, "cifer": {}}},
+             [{"_id": "test", "a1": "a", "a2": "ku", "a3": "text"},
+              {"_id": "test2", "a1": "b", "a2": "dos", "a3": "text"}]],
+             [{"_id": "test", "a1": 1, "a2": 1, "a3": "text"},
+              {"_id": "test2", "a1": 0, "a2": 0, "a3": "text"}]
+                                                              ),
+            ([{"a1": {"score": 1, "cifer": {"a": 1, "b": 0}},
+               "a2": {"score": 2, "cifer": {"ku": 1, "dos": 0}},
+               "a3": {"score": 3, "cifer": {}}},
+             [{"_id": "test", "a1": "a", "a2": "ku", "a3": "text"},
+              {"_id": "test2", "a1": "b", "a2": "quest", "a3": "text"}]],
+             [{"_id": "test", "a1": 1, "a2": 1, "a3": "text"},
+              {"_id": "test2", "a1": 0, "a2": "ERROR:attr not in cifer", "a3": "text"}]
+             ),
+            ]
+@pytest.mark.parametrize("ca", ca_tests)
+def test_convert_attributes(ca):
+    actual = convert_attributes(ca[0][0], ca[0][1])
+    expected = ca[1]
     assert expected == actual

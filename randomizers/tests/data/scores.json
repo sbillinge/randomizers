@@ -1,5 +1,5 @@
-{"work_continent": {"score":3, "decoder": {"A": 1, "U": 0},
-  "gender": {"score":3, "decoder": {"F": 1, "M": 0}},
-  "same_institution",: {"score":1, "decoder": {}}},
+{"work_continent": {"score": 3, "cifer": {"A": 1, "U": 0}},
+  "gender": {"score":3, "cifer": {"F": 1, "M": 0}},
+  "same_institution",: {"score":1, "cifer": {}}},
   "previously_paired": 3,
 }
