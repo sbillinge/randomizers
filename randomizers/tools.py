@@ -81,6 +81,7 @@ def convert_attributes(scores, people):
         for attribute, value in scores.items():
             if attribute != "previously_paired":
                 cifer = value.get("cifer")
-                decoded_person[attribute] = cifer.get(person.get(attribute), errmsg)
+                if cifer: # if there is no cifer, pass through the entries untouched
+                    decoded_person[attribute] = cifer.get(person.get(attribute), errmsg)
         decoded_people.append(decoded_person)
     return decoded_people
