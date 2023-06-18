@@ -1,14 +1,25 @@
+import csv
 import pathlib
 import sys
 import json
 import numpy
 from json import JSONEncoder
 
-class NumpyArrayEncoder(JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, numpy.ndarray):
-            return obj.tolist()
-        return JSONEncoder.default(self, obj)
+
+def load_csv(file):
+    if isinstance(file, str):
+        file = pathlib.Path(file)
+    if not pathlib.Path.exists(file):
+        raise RuntimeError(f"file: {file} not found")
+    with open(file, "r", encoding='utf-8') as f:
+        doc = csv.DictReader(f)
+        coll = []
+        for entry in doc:
+            entry.update({"_id": entry.get("name","").strip()})
+            coll.append(entry)
+
+    return coll
+
 
 def load_json_inputs(file):
     """
@@ -48,10 +59,13 @@ def dump_object(object, file):
     """
     file_path = pathlib.Path(file)
         # file.parent.mkdir(parents=True, exist_ok=True)
-    # try:
+    try:
         with open(file_path, "w", encoding='utf-8') as f:
             doc = json.dump(object, f)
-    # except
+    except FileNotFoundError:
+        raise FileNotFoundError("Cannot write file, probably parent directory is "
+                                "missing.  Creat the parent directory on your "
+                                "file system then rerun")
     return
 
 def json_to_collection(doc):

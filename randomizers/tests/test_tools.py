@@ -1,24 +1,24 @@
 import numpy as np
 import pytest
+import unittest.mock as mock
 
-from randomizers.tools import initialize_pairs, get_person, compute_diff, convert_attributes
+from randomizers.tools import initialize_pairs,\
+    get_person,\
+    compute_diff,\
+    convert_attributes,\
+    assigned_seating
 
 ip_people = [{"_id": "one", "thing1": 1, "thing2": 0},
              {"_id": "two", "thing1": 0, "thing2": 1},
              {"_id": "three", "thing1": 1, "thing2": 1}]
-ip_scores = {"thing1": 1, "thing2": 2}
-initial_pairs = {"pair_ids":["one-two", "one-three", "two-three"],
-                 "pair_sites":[("one", "two"), ("one", "three"), ("two", "three")],
-                 "paired": np.array([0, 0, 0]),
-                 "static_scores": np.array([3, 2, 1])
-                 }
+ip_scores = {"thing1": {"score": 1}, "thing2": {"score": 2}}
+initial_pairs = [("one", "two", 3, 0),("one", "three", 2, 0), ("two", "three", 1, 0)]
+
 
 def test_initialize_pairs():
     expected = initial_pairs
     actual = initialize_pairs(ip_people, ip_scores)
-    assert expected.get("pair_ids") == actual.get("pair_ids")
-    assert expected.get("paired").all() == actual.get("paired").all()
-    assert expected.get("pair_sites") == actual.get("pair_sites")
+    assert expected == actual
 
 gp_people = [{"_id": "test", "a1": 1}, {"_id": "test2", "a1": 2},
  {"_id": "test3", "a1": 3}]
@@ -66,3 +66,12 @@ def test_convert_attributes(ca):
     actual = convert_attributes(ca[0][0], ca[0][1])
     expected = ca[1]
     assert expected == actual
+
+
+@mock.patch('random.choice')
+def test_assigned_seating(mocked_choice):
+    mocked_choice.side_effect = [{"_id": "three", "thing1": 1, "thing2": 1}, ('one', 'three', 2, 0), ("two", "three", 1, 0)]
+    with mock.patch('random.choice', mocked_choice):
+        actual  = assigned_seating(ip_people, initial_pairs)
+        expected = [{'_id': 'three', 'thing1': 1, 'thing2': 1}, {'_id': 'one', 'thing1': 1, 'thing2': 0}, {'_id': 'two', 'thing1': 0, 'thing2': 1}]
+        assert expected == actual
