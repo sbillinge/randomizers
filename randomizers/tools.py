@@ -32,7 +32,7 @@ def initialize_pairs(people, scores):
     for person1 in person_ids:
         person_ids2.remove(person1)
         for person2 in person_ids2:
-            sites = (person1, person2)
+            sites = [person1, person2]
             pair_sites.append(sites)
 
     for pair in pair_sites:
@@ -45,7 +45,7 @@ def initialize_pairs(people, scores):
 
     pairset.update({"pair_ids": pair_ids,
                     "pair_sites": pair_sites,
-                    "paired": np.zeros(len(pair_ids)),
+                    "paired": list(np.zeros(len(pair_ids))),
                     "static_scores": static_scores})
 
     return pairset

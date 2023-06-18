@@ -1,6 +1,14 @@
 import pathlib
 import sys
 import json
+import numpy
+from json import JSONEncoder
+
+class NumpyArrayEncoder(JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, numpy.ndarray):
+            return obj.tolist()
+        return JSONEncoder.default(self, obj)
 
 def load_json_inputs(file):
     """
@@ -15,11 +23,36 @@ def load_json_inputs(file):
     -------
     the people collection
     """
+    if isinstance(file, str):
+        file = pathlib.Path(file)
     if not pathlib.Path.exists(file):
         raise RuntimeError(f"file: {file} not found")
     with open(file, "r", encoding='utf-8') as f:
         doc = json.load(f)
     return doc
+
+def dump_object(object, file):
+    """
+    dumps pairs object to json to file system
+
+    Parameters
+    ----------
+     pairs: pairs object
+     the pairs arrays to be written to disc
+    file: pathlib.Path object
+      the path to the file that will be written.  If None write in current directory
+
+    Returns
+    -------
+    None
+    """
+    file_path = pathlib.Path(file)
+        # file.parent.mkdir(parents=True, exist_ok=True)
+    # try:
+        with open(file_path, "w", encoding='utf-8') as f:
+            doc = json.dump(object, f)
+    # except
+    return
 
 def json_to_collection(doc):
     coll = []
