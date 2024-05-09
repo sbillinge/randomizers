@@ -31,14 +31,14 @@ for i in np.arange(30):
 
     classlist = list(filter(None, classlist)) # filter out any empty lines
     #random.shuffle(classlist)                 # now shuffle the names
-    ranName = random.choice(classlist)
+    picked = random.choice(classlist).strip()
 
     # Some cleaning and pretty printing
 
-    words = re.split(',',ranName)               # split into first and last names, assuming the format Last, First Second Third
-    firstname = words[-1].split()         # first names are after the comma so [-1]
+    # words = re.split(',',ranName)               # split into first and last names, assuming the format Last, First Second Third
+    # firstname = words[-1].split()         # first names are after the comma so [-1]
 
-    item = 'And the lucky person is: '+firstname[0]     # pretty print with only first first name
+    item = f'And the lucky person is: {picked}'  # pretty print with only first first name
     print(item)
     o.write(item + '\n')
 

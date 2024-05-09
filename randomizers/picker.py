@@ -20,22 +20,23 @@ o = open('randomClasslist.txt','w')
 classlist = i.readlines()
 
 # clean the lines to remove leading and trailing whitespace and line-ends
-iter = 0
-for x in classlist:
-    classlist[iter] = classlist[iter].strip()
-    iter+=1
+
 
 classlist = list(filter(None, classlist)) # filter out any empty lines
-#random.shuffle(classlist)                 # now shuffle the names
-ranName = random.choice(classlist)
+random.shuffle(classlist)                 # now shuffle the names
+picked = random.choice(classlist).strip()
 
 # Some cleaning and pretty printing
 
-words = re.split(',',ranName)               # split into first and last names, assuming the format Last, First Second Third
-firstname = words[-1].split()         # first names are after the comma so [-1]
-    
-item = 'And the lucky person is: '+firstname[0]     # pretty print with only first first name
-print(item)                  
+# words = re.split(',',ranName)               # split into first and last names, assuming the format Last, First Second Third
+# firstname = words[-1].split()         # first names are after the comma so [-1]
+
+item = f'And the lucky person is: {picked}'    # pretty print with only first first name
+print(item)
+
+print("randomized list:")
+for item in classlist:
+    print(item)
 
 o.close()
 
